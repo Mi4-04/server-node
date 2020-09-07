@@ -5,7 +5,7 @@ const flash = require('flash')
 const app = express();
 
 
-//For BodyParser
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
