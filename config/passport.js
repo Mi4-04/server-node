@@ -5,8 +5,6 @@ const bCrypt = require('bcrypt-nodejs');
 
 module.exports = function(passport) {
 
-
-
     passport.use('local-singup', new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
@@ -114,58 +112,3 @@ module.exports = function(passport) {
     });
 
 }
-
-/*module.exports = function(passport) {
-    passport.serializeUser(function(user, done) {
-        console.log('Сериализация' + user)
-        done(null, user.id);
-    });
-
-    // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
-        console.log('Десериализация', id)
-        Users.findById(id, function(err, user) {
-            done(err, user)
-        })
-
-    });
-
-    passport.use('local-signup', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
-        function(req, email, password, done) {
-
-            Users.findOne({
-                where: {
-                    email: email
-                }
-            }).then(function(user, err) {
-                console.log('I entered' + user);
-                console.log('I entered' + err);
-                if (err) {
-                    console.log(err);
-                    return done(null, false);
-                }
-
-                if (user == null) {
-                    Users.create({
-                        email: email,
-                        password: password
-                    }).then(function(user) {
-                        return done(null, user);
-                    }).catch(function(err) {
-                        return done(null, err);
-                    });
-                }
-
-                if (user) {
-                    return done(null, false);
-                }
-
-            })
-
-        }));
-}*/

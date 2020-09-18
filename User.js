@@ -1,31 +1,27 @@
-const Sequelize = require('sequelize')
-const sequelize = new Sequelize("servernode", "zakharovm", "zakharovm", {
-    dialect: "postgres",
-    host: "localhost",
-    port: 5432
-})
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize')
 
 const Users = sequelize.define('user', {
     id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
     email: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
     },
     password: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     name: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
     },
     surname: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
     }
 })

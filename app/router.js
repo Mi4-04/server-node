@@ -1,11 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const Sequelize = require('sequelize')
-    //const passport = require('passport')
 const Users = require('../User').Users
+const passport = require('passport')
 
-
-module.exports = function(app, passport) {
+module.exports = function(app) {
     app.use(express.urlencoded({ extended: false }))
     app.use(express.json())
     require('../config/passport')(passport)
@@ -18,8 +16,6 @@ module.exports = function(app, passport) {
     router.get('/signin', function(req, res) {
         res.render('signin')
     })
-
-
 
     router.post('/signup', function(req, res, next) {
 
@@ -112,52 +108,4 @@ module.exports = function(app, passport) {
         res.render('orders')
     });
 
-    /* app.post('/signin', function(req, res) {
-         Users.findOne({
-             where: {
-                 email: req.body.email
-             }
-         }).then((user) => {
-             if (!user) {
-                 return res.status
-             }
-         })
-     })*/
-
 }
-
-
-
-/*const authController = require('./model/authcontroller')
-module.exports = function(app, passport) {
-    app.use(express.urlencoded({ extended: false }))
-    app.use(express.json())
-
-    app.get('/signup', authController.signup)
-    app.get('/signin', authController.signin);
-
-    app.get('/orders', authController.orders);
-
-    app.get('/logout', authController.logout);
-    app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect: '/orders',
-
-            failureRedirect: '/signup'
-        }
-
-    ))(req, res);
-
-
-    function isLoggedIn(req, res, next) {
-
-        if (req.isAuthenticated())
-
-            return next();
-
-        res.redirect('/signin');
-
-    }
-
-    app.get('/orders', isLoggedIn, authController.orders);
-
-}*/

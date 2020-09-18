@@ -31,7 +31,7 @@ app.use(flash());
 // функции маршрутизатора должны быть вызваны после инициализации паспорта, чтобы инициализировать паспорт, прежде чем фактически пытаться использовать их. 
 
 require('./config/passport')(passport);
-require('./app/router')(app, passport);
+require('./app/router')(app);
 
 
 app.get('/', (req, res) => res.send('Hello'))
@@ -39,12 +39,6 @@ app.get('/', (req, res) => res.send('Hello'))
 app.get('/orders', (req, res) => {
     res.send('Order page')
 })
-
-
-
-
-
-
 
 const PORT = process.env.PORT || 3000
 
