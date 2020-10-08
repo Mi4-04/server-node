@@ -1,114 +1,97 @@
-//const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
-const Users = require('../User').Users
-const bCrypt = require('bcrypt-nodejs');
+const Users = require('../User').Users;
+const AuthTokenStrategy = require('passport-auth-token');
 
-module.exports = function(passport) {
-
-    passport.use('local-singup', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true
+module.exports = function (passport) {
+  passport.use(
+    'authtoken',
+    new AuthTokenStrategy(function (token, done) {
+      AccessToken.findOne(
+        {
+          where: {
+            id: token,
+          },
         },
+        function (error, accessToken) {
+          if (error) {
+            console.log(1, error);
+            return done(error);
+          }
 
-        function(req, email, password, done) {
-            const generateHash = function(password) {
-                return bCrypt.hashSync(password, bCrypt.genSaltSync(100), null)
+          if (accessToken) {
+            if (!token.isValid(accessToken)) {
+              console.log(2);
+              return done(null, false);
             }
 
-            Users.findOne({
+            Users.findOne(
+              {
                 where: {
-                    email: email
+                  id: accessToken.id,
+                },
+              },
+              function (error, user) {
+                if (error) {
+                  console.log(3, error);
+                  return done(error);
                 }
-            }).then(function(user) {
-                if (user) {
-                    return done(null, false, {
-                        message: 'That email is already taken'
-                    })
-                } else {
-                    const userPassword = generateHash(password)
 
-                    const data = {
-                        email: email,
-                        password: userPassword,
-                        name: req.body.name,
-                        surname: req.body.surname
-                    }
-                    Users.create(data).then(function(newUser, created) {
-                        if (!newUser) {
-                            return done(null, false)
-                        }
-
-                        if (newUser) {
-                            return done(null, newUser)
-                        }
-                    })
-                }
-            })
-        }
-
-    ))
-
-
-    passport.use('local-sigin', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true
-        },
-        function(req, email, password, done) {
-            const isValidPassword = function(userpass, password) {
-                return bCrypt.compareSync(password, userpass)
-            }
-            Users.findOne({
-                where: {
-                    email: email
-                }
-            }).then(function(user) {
                 if (!user) {
-                    return done(null, false, {
-                        message: 'Email does not exist'
-                    })
+                  console.log(4);
+                  return done(null, false);
                 }
-                if (!isValidPassword(user.password, password)) {
-                    return done(null, false, {
-                        message: 'Incorrect password'
-                    })
-                }
+                console.log(5);
+                return done(null, user);
+              },
+            );
+          } else {
+            return done(null);
+          }
+        },
+      );
+    }),
+  );
+};
+//const passport = require('passport');
+/*const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcryptjs');
+const sequelize = require('../sequelize');
+const Users = require('../User').Users;
 
-                const userinfo = user.get();
-                return done(null, userinfo)
-            }).catch(function(err) {
-                console.log('Error: ', err);
-                return done(null, false, {
-                    message: 'Something went wrong with your Signin '
-                })
-            })
+module.exports = function (passport) {
+  passport.use(
+    new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+      //Match User
+      Users.findOne({
+        where: {
+          email: email,
+        },
+      })
+        .then((user) => {
+          if (!user) {
+            return done(null, false, { message: 'That email is not regester' });
+          }
 
-        }
-    ))
-
-    passport.serializeUser(function(user, done) {
-        console.log('Сериализация' + user)
-        done(null, user.id);
-    });
-
-    // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
-        console.log('Десериализация', id)
-        Users.findById(id).then(function(user) {
-
-            if (user) {
-
-                done(null, user.get());
-
+          //Match password
+          bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+              return done(null, user);
             } else {
-
-                done(user.errors, null);
-
+              return done(null, false, { message: 'Passport incorrect' });
             }
+          });
+        })
+        .catch((err) => console.log(err));
+    }),
+  );
 
-        });
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
 
+  passport.deserializeUser((id, done) => {
+    Users.findByPk(id, (err, user) => {
+      done(err, user);
     });
-
-}
+  });
+};*/

@@ -1,47 +1,70 @@
 const express = require('express');
+const exhbs = require('express-handlebars');
 const session = require('express-session');
+//const passport = require('passport');
+const flash = require('connect-flash');
+const cors = require('cors');
+const sequelize = require('./sequelize');
+const path = require('path');
 const passport = require('passport');
-const flash = require('flash')
+const { dirname } = require('path');
 const app = express();
 
+app.use(express.static(path.resolve('public')));
+app.use(cors());
+//Passport config
+require('./config/passport')(passport);
 
+sequelize
+  .sync()
+  .then(() => console.log('Database is ready'))
+  .catch((err) => cosnole.log(err));
 
+//Handlebars
+/*const hbs = exhbs.create({
+  defaultLayout: false,
+  layoutsDir: 'views/layouts/',
+  exname: 'hbs',
+});
+
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+app.set('views', 'views');*/
+
+//bodyparser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
-// For Passport
-
-app.use(session({
-    secret: 'keyboard cat',
+//express session
+app.use(
+  session({
+    secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie: {
-        path: '/',
-        httpOnly: true,
-        maxAge: 60 * 60 * 1000
-    }
-})); // session secret
+  }),
+);
 
-
+//Passport
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+app.use(passport.session());
 
-app.use(flash());
-// функции маршрутизатора должны быть вызваны после инициализации паспорта, чтобы инициализировать паспорт, прежде чем фактически пытаться использовать их. 
+//Connect- flash
+/*app.use(flash());
 
-require('./config/passport')(passport);
-require('./app/router')(app);
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});*/
 
+//Routes
+app.use('/', require('./router/index'));
+app.use('', require('./router/router'));
 
-app.get('/', (req, res) => res.send('Hello'))
-
-app.get('/orders', (req, res) => {
-    res.send('Order page')
-})
-
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+  console.log(`Server is running on port ${PORT}`);
+});
+
+module.exports = { app, sequelize };
