@@ -25,10 +25,6 @@ const Users = sequelize.define('Users', {
     allowNull: false,
   },
 });
-/*sequelize
-  .sync()
-  .then(() => console.log('Database is ready'))
-  .catch((err) => cosnole.log(err));*/
 
 exports = module.exports = {
   sequelize,

@@ -20,6 +20,8 @@
         "express-handlebars": "^5.1.0",
         "express-session": "^1.17.1",
         "flash": "^1.1.0",
+        "jsonwebtoken": "^8.5.1",
+        "morgan": "^1.10.0",
         "nodemon": "^2.0.4",
         "passport": "^0.4.1",
         "passport-auth-token": "^1.0.1",

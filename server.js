@@ -1,14 +1,16 @@
 const express = require('express');
 const exhbs = require('express-handlebars');
 const session = require('express-session');
-//const passport = require('passport');
-const flash = require('connect-flash');
 const cors = require('cors');
+const morgan = require('morgan')
 const sequelize = require('./sequelize');
 const path = require('path');
 const passport = require('passport');
-const { dirname } = require('path');
+
 const app = express();
+
+
+app.use(morgan('dev'));
 
 app.use(express.static(path.resolve('public')));
 app.use(cors());
@@ -19,17 +21,6 @@ sequelize
   .sync()
   .then(() => console.log('Database is ready'))
   .catch((err) => cosnole.log(err));
-
-//Handlebars
-/*const hbs = exhbs.create({
-  defaultLayout: false,
-  layoutsDir: 'views/layouts/',
-  exname: 'hbs',
-});
-
-app.engine('hbs', hbs.engine);
-app.set('view engine', 'hbs');
-app.set('views', 'views');*/
 
 //bodyparser
 app.use(express.urlencoded({ extended: false }));
@@ -45,20 +36,12 @@ app.use(
 );
 
 //Passport
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize())
+require('./config/passport')(passport)
 
-//Connect- flash
-/*app.use(flash());
-
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  next();
-});*/
 
 //Routes
-app.use('/', require('./router/index'));
+
 app.use('', require('./router/router'));
 
 const PORT = process.env.PORT || 3000;
