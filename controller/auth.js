@@ -26,7 +26,7 @@ if(passwordResult){
 }else{
     //Пароли не совпали
     res.status(401).json({
-        message: 'Пароли не совпадают'
+        message: 'Не верно указан email или пароль'
     })
 }
 

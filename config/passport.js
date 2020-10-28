@@ -1,5 +1,4 @@
-const JwtStrategy = require('passport-jwt').Strategy
-const ExtractJwt = require('passport-jwt').ExtractJwt
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
 const keys = require('../config/keys')
 const Users = require('../User').Users
 
@@ -14,7 +13,8 @@ module.exports = (passport) => {
   passport.use(
     new JwtStrategy(options, async(payload, done) => {
       try{
-const user = await Users.findByPk( payload.userId ,{where:{
+
+  const user = await Users.findOne( payload.email ,{where:{
 email: 'email',
 id: 'id'
 }})
@@ -22,7 +22,7 @@ id: 'id'
 if(user){
   done(null, user)
 }else{
-  done(null, false)
+  done(null, null)
 }
 }catch(err){
   console.log(err)
