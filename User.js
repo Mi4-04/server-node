@@ -19,11 +19,28 @@ const Users = sequelize.define('Users', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    isAlpha: true,
   },
   surname: {
     type: DataTypes.STRING,
     allowNull: false,
+    isAlpha: true, 
   },
+  country: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    isAlpha: true, 
+  },
+  city: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    isAlpha: true, 
+  },
+  typeUser: {
+    type: DataTypes.STRING,
+  
+  },
+  
 });
 
 exports = module.exports = {
