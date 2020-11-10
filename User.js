@@ -23,21 +23,21 @@ const Users = sequelize.define('Users', {
   },
   surname: {
     type: DataTypes.STRING,
-    allowNull: false,
+    //allowNull: false,
     isAlpha: true, 
   },
   country: {
     type: DataTypes.STRING,
-    allowNull: false,
+   // allowNull: false,
     isAlpha: true, 
   },
   city: {
     type: DataTypes.STRING,
-    allowNull: false,
+    //allowNull: false,
     isAlpha: true, 
   },
   typeUser: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('iCustomer', 'iExecutor') ,
   
   },
   

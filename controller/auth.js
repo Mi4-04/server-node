@@ -61,9 +61,6 @@ const user = new Users({
     email: req.body.email,
     password: bcrypt.hashSync(password, salt),
     name: req.body.name,
-    surname: req.body.surname,
-    country: req.body.country,
-    city: req.body.city,
     typeUser: req.body.typeUser,
 
 })
