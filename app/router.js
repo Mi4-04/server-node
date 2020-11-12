@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Sequelize = require('sequelize')
-    //const passport = require('passport')
 const Users = require('../User').Users
 
 
