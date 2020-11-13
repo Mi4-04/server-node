@@ -1,5 +1,4 @@
 const express = require('express');
-const exhbs = require('express-handlebars');
 const session = require('express-session');
 const cors = require('cors');
 const morgan = require('morgan')
@@ -20,7 +19,7 @@ require('./config/passport')(passport);
 sequelize
   .sync()
   .then(() => console.log('Database is ready'))
-  .catch((err) => cosnole.log(err));
+  .catch((err) => console.log(err));
 
 //bodyparser
 app.use(express.urlencoded({ extended: false }));
@@ -44,7 +43,7 @@ require('./config/passport')(passport)
 
 app.use('', require('./router/router'));
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

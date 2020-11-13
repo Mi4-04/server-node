@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const passport  = require('passport')
 const Users = require('../User').Users
 const keys = require('../config/keys')
 const errorHandler = require('../utils/errorHandler')
