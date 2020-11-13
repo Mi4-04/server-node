@@ -1,9 +1,5 @@
-const Sequelize = require('sequelize')
-const sequelize = new Sequelize("servernode", "zakharovm", "zakharovm", {
-    dialect: "postgres",
-    host: "localhost",
-    port: 5432
-})
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
 
 const Users = sequelize.define('Users', {
   id: {
@@ -45,6 +41,6 @@ const Users = sequelize.define('Users', {
 });
 
 exports = module.exports = {
-    sequelize,
-    Users
-}
+  sequelize,
+  Users,
+};
