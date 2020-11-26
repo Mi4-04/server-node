@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const sequelize = require('./sequelize');
 const path = require('path');
 const passport = require('passport');
+require('dotenv').config()
 
 const app = express();
 
@@ -43,7 +44,7 @@ require('./config/passport')(passport)
 
 app.use('', require('./router/router'));
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

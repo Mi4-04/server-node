@@ -5,3 +5,4 @@
 /public
 /.pnp
 .pnp.js
+.env
