@@ -6,6 +6,8 @@ const morgan = require('morgan')
 const sequelize = require('./sequelize');
 const path = require('path');
 const passport = require('passport');
+const menuCreatorRouter = require('./router/menuCreator')
+const authRouter =  require('./router/router')
 
 const app = express();
 
@@ -18,9 +20,9 @@ app.use(cors());
 require('./config/passport')(passport);
 
 sequelize
-  .sync()
+  .sync({})
   .then(() => console.log('Database is ready'))
-  .catch((err) => cosnole.log(err));
+  .catch((err) => console.log(err));
 
 //bodyparser
 app.use(express.urlencoded({ extended: false }));
@@ -42,7 +44,8 @@ require('./config/passport')(passport)
 
 //Routes
 
-app.use('', require('./router/router'));
+app.use('', authRouter);
+app.use('', menuCreatorRouter);
 
 const PORT = process.env.PORT || 3000;
 

@@ -1,6 +1,6 @@
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
 const keys = require('../config/keys')
-const Users = require('../User').Users
+const Users = require('../db/User').Users
 
 
 const options = {
@@ -14,7 +14,7 @@ module.exports = (passport) => {
     new JwtStrategy(options, async(payload, done) => {
       try{
 
-  const user = await Users.findOne( payload.email ,{where:{
+  const user = await Users.findByPk( payload.id ,{where:{
 email: 'email',
 id: 'id'
 }})
