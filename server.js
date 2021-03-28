@@ -1,22 +1,22 @@
 const express = require('express');
-const exhbs = require('express-handlebars');
 const session = require('express-session');
 const cors = require('cors');
-const morgan = require('morgan')
-const sequelize = require('./sequelize');
+const morgan = require('morgan');
 const path = require('path');
 const passport = require('passport');
-const menuCreatorRouter = require('./router/menuCreator')
-const authRouter =  require('./router/router')
+const sequelize = require('./sequelize');
+const ordersRouter = require('./router/Orders');
+const authRouter = require('./router/router');
 
 const app = express();
 
-
 app.use(morgan('dev'));
+
+app.use('/uploads', express.static('uploads'));
 
 app.use(express.static(path.resolve('public')));
 app.use(cors());
-//Passport config
+// Passport config
 require('./config/passport')(passport);
 
 sequelize
@@ -24,11 +24,11 @@ sequelize
   .then(() => console.log('Database is ready'))
   .catch((err) => console.log(err));
 
-//bodyparser
+// bodyparser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-//express session
+// express session
 app.use(
   session({
     secret: 'secret',
@@ -37,15 +37,14 @@ app.use(
   }),
 );
 
-//Passport
-app.use(passport.initialize())
-require('./config/passport')(passport)
+// Passport
+app.use(passport.initialize());
+require('./config/passport')(passport);
 
-
-//Routes
+// Routes
 
 app.use('', authRouter);
-app.use('', menuCreatorRouter);
+app.use('', ordersRouter);
 
 const PORT = process.env.PORT || 3000;
 

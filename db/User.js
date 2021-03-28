@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
-//const Orders = require('./Orders')
+const Orders = require('./Orders').Orders
 
 const Users = sequelize.define('Users', {
   id: {
@@ -43,39 +43,6 @@ const Users = sequelize.define('Users', {
   paranoid: true
 });
 
-const Orders = sequelize.define('Orders', {
-  id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-  categories: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-      //allowNull: false,
-  },
-  name: {
-      type: DataTypes.STRING, 
-      allowNull: false
-  },
-  description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-  }, 
-  cost: {
-      type: DataTypes.INTEGER
-  }, 
-  //это под вопросом
-  date: {
-      type: DataTypes.DATE,
-      dafaultValue: Date.now
-  },
-
- imageSrc : {
-     type: DataTypes.TEXT,
-     dafaultValue: ''
- }
- 
-})
 
 
 Users.hasMany(Orders)

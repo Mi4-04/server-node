@@ -6,3 +6,5 @@
 /.pnp
 .pnp.js
 .env
+.eslintrc
+.eslintignore
