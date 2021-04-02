@@ -22,7 +22,7 @@ module.exports.getMyAll = async (req, res) => {
   try {
     const currentUser = await Users.findByPk({
       where: {
-        id: req.body.id,
+        id: req.user.id,
       },
     });
 
@@ -75,7 +75,7 @@ module.exports.remove = async (req, res) => {
   try {
     const currentUser = await Users.findByPk({
       where: {
-        id: req.body.id,
+        id: req.user.id,
       },
     });
 

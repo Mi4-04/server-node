@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
-const Orders = require('./Orders').Orders
+const { Orders } = require('./Orders')
 
 const Users = sequelize.define('Users', {
   id: {
@@ -14,7 +14,7 @@ const Users = sequelize.define('Users', {
     unique: true,
   },
   password: {
-    type: DataTypes.STRING, 
+    type: DataTypes.STRING,
     allowNull: false,
   },
   name: {
@@ -24,30 +24,29 @@ const Users = sequelize.define('Users', {
   },
   surname: {
     type: DataTypes.STRING,
-    isAlpha: true, 
+    isAlpha: true,
   },
   country: {
     type: DataTypes.STRING,
-    isAlpha: true, 
+    isAlpha: true,
   },
   city: {
     type: DataTypes.STRING,
-    isAlpha: true, 
+    isAlpha: true,
   },
   typeUser: {
-    type: DataTypes.ENUM('iCustomer', 'iExecutor') ,
-  
+    type: DataTypes.ENUM('iCustomer', 'iExecutor'),
+
   },
- 
+
 }, {
-  paranoid: true
+  paranoid: true,
 });
 
-
-
 Users.hasMany(Orders)
+Orders.belongsTo(Users)
 
-exports = module.exports = {
+module.exports = {
   sequelize,
   Users,
 };

@@ -35,7 +35,7 @@ const Orders = sequelize.define('Orders', {
 
 });
 
-exports = module.exports = {
+module.exports = {
   sequelize,
   Orders,
 };
