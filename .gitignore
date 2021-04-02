@@ -2,5 +2,10 @@
 
 # dependencies
 /node_modules
+/public
 /.pnp
 .pnp.js
+.env
+.eslintrc
+.eslintignore
+/uploads
