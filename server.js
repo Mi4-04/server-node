@@ -1,53 +1,55 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
+const morgan = require('morgan');
+const path = require('path');
 const passport = require('passport');
-const flash = require('flash')
+const sequelize = require('./sequelize');
+const ordersRouter = require('./router/Orders');
+const authRouter = require('./router/router');
+
 const app = express();
 
+app.use(morgan('dev'));
 
-//For BodyParser
+app.use('/uploads', express.static('uploads'));
+
+app.use(express.static(path.resolve('public')));
+app.use(cors());
+// Passport config
+require('./config/passport')(passport);
+
+sequelize
+  .sync()
+  .then(() => console.log('Database is ready'))
+  .catch((err) => console.log(err));
+
+// bodyparser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
-// For Passport
-
-app.use(session({
-    secret: 'keyboard cat',
+// express session
+app.use(
+  session({
+    secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie: {
-        path: '/',
-        httpOnly: true,
-        maxAge: 60 * 60 * 1000
-    }
-})); // session secret
+  }),
+);
 
-
+// Passport
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-
-app.use(flash());
-// функции маршрутизатора должны быть вызваны после инициализации паспорта, чтобы инициализировать паспорт, прежде чем фактически пытаться использовать их. 
-
 require('./config/passport')(passport);
-require('./app/router')(app, passport);
 
+// Routes
 
-app.get('/', (req, res) => res.send('Hello'))
+app.use('', authRouter);
+app.use('', ordersRouter);
 
-app.get('/orders', (req, res) => {
-    res.send('Order page')
-})
-
-
-
-
-
-
-
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+  console.log(`Server is running on port ${PORT}`);
+});
+
+module.exports = { app, sequelize };
