@@ -8,24 +8,23 @@ const Orders = sequelize.define('Orders', {
     primaryKey: true,
   },
   categories: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: false,
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   description: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
   },
   cost: {
     type: DataTypes.INTEGER,
   },
 
   date: {
-    type: DataTypes.DATE,
-    dafaultValue: Date.now,
+    type: DataTypes.INTEGER,
   },
 
   imageSrc: {

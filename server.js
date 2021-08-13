@@ -20,7 +20,7 @@ app.use(cors());
 require('./config/passport')(passport);
 
 sequelize
-  .sync({})
+  .sync()
   .then(() => console.log('Database is ready'))
   .catch((err) => console.log(err));
 

@@ -5,11 +5,7 @@ const errorHandler = require('../utils/errorHandler');
 // все заказы
 module.exports.getAll = async (req, res) => {
   try {
-    const orders = await Orders.findAll({
-      where: {
-        id: req.body.id,
-      },
-    });
+    const orders = await Orders.findAll();
     res.status(200).json(orders);
   } catch (e) {
     errorHandler(res, e);
