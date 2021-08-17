@@ -1,6 +1,6 @@
-const { Orders } = require('../db/Orders');
-const { Users } = require('../db/User').Users;
-const errorHandler = require('../utils/errorHandler');
+const { Orders } = require("../db/Orders");
+const { Users } = require("../db/User").Users;
+const errorHandler = require("../utils/errorHandler");
 
 // все заказы
 module.exports.getAll = async (req, res) => {
@@ -23,7 +23,7 @@ module.exports.getMyAll = async (req, res) => {
     });
 
     if (currentUser) {
-      console.log('User id: ', currentUser.id);
+      console.log("User id: ", currentUser.id);
     }
     const orders = await currentUser.getOrders();
     res.status(200).json(orders);
@@ -51,14 +51,12 @@ module.exports.create = async (req, res) => {
     console.log(Array.isArray(req.body.categories), typeof req.body.categories);
     console.log(req.body.categories);
     const orders = await new Orders({
-
       categories: req.body.categories,
       name: req.body.name,
       description: req.body.description,
       cost: req.body.cost,
       date: req.body.date,
-      imageSrc: req.file ? req.file.path : ' ',
-
+      imageSrc: req.file ? req.file.path : " ",
     }).save();
     res.status(201).json(orders);
   } catch (e) {
@@ -76,7 +74,7 @@ module.exports.remove = async (req, res) => {
     });
 
     if (currentUser) {
-      console.log('User id: ', currentUser.id);
+      console.log("User id: ", currentUser.id);
     }
 
     await currentUser.getOrders().destroy({
@@ -85,7 +83,7 @@ module.exports.remove = async (req, res) => {
       },
     });
     res.status(200).json({
-      message: 'Заказ был удален',
+      message: "Заказ был удален",
     });
   } catch (e) {
     errorHandler(res, e);

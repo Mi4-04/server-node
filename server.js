@@ -1,27 +1,27 @@
-const express = require('express');
-const session = require('express-session');
-const cors = require('cors');
-const morgan = require('morgan');
-const path = require('path');
-const passport = require('passport');
-const sequelize = require('./sequelize');
-const ordersRouter = require('./router/Orders');
-const authRouter = require('./router/router');
+const express = require("express");
+const session = require("express-session");
+const cors = require("cors");
+const morgan = require("morgan");
+const path = require("path");
+const passport = require("passport");
+const sequelize = require("./sequelize");
+const ordersRouter = require("./router/Orders");
+const authRouter = require("./router/router");
 
 const app = express();
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
-app.use('/uploads', express.static('uploads'));
+app.use("/uploads", express.static("uploads"));
 
-app.use(express.static(path.resolve('public')));
+app.use(express.static(path.resolve("public")));
 app.use(cors());
 // Passport config
-require('./config/passport')(passport);
+require("./config/passport")(passport);
 
 sequelize
   .sync()
-  .then(() => console.log('Database is ready'))
+  .then(() => console.log("Database is ready"))
   .catch((err) => console.log(err));
 
 // bodyparser
@@ -31,20 +31,20 @@ app.use(express.json());
 // express session
 app.use(
   session({
-    secret: 'secret',
+    secret: "secret",
     resave: true,
     saveUninitialized: true,
-  }),
+  })
 );
 
 // Passport
 app.use(passport.initialize());
-require('./config/passport')(passport);
+require("./config/passport")(passport);
 
 // Routes
 
-app.use('', authRouter);
-app.use('', ordersRouter);
+app.use(authRouter);
+app.use(ordersRouter);
 
 const PORT = process.env.PORT || 3000;
 
