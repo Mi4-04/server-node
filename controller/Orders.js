@@ -35,7 +35,7 @@ module.exports.getMyAll = async (req, res) => {
 // когда просмотреть заказ подробнее
 module.exports.getById = async (req, res) => {
   try {
-    const order = await Orders.findById(req.params.id);
+    const order = await Orders.findByPk(req.params.id);
     res.status(200).json(order);
     if (order) {
       console.log(order);
@@ -48,10 +48,9 @@ module.exports.getById = async (req, res) => {
 // создание заказа
 module.exports.create = async (req, res) => {
   try {
-    console.log(Array.isArray(req.body.categories), typeof req.body.categories);
-    console.log(req.body.categories);
+    console.log(req.body);
     const orders = await new Orders({
-      categories: req.body.categories,
+      categories: req.body.categories.split(","),
       name: req.body.name,
       description: req.body.description,
       cost: req.body.cost,
@@ -79,7 +78,7 @@ module.exports.remove = async (req, res) => {
 
     await currentUser.getOrders().destroy({
       where: {
-        _id: req.params.id,
+        id: req.params.id,
       },
     });
     res.status(200).json({
